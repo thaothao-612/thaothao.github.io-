@@ -118,12 +118,20 @@
       flex-direction: column;
       justify-content: center;
       padding: 5rem 2rem 4rem;
+    }
+    /* Scroll reveal: section content bắt đầu ẩn, khi vào viewport thêm .reveal */
+    .section-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
       opacity: 0;
-      transform: translateY(40px);
+      transform: translateY(30px);
       transition: opacity 0.8s ease, transform 0.8s ease;
     }
-    section.reveal { opacity: 1; transform: translateY(0); }
-    .section-inner { max-width: 900px; margin: 0 auto; width: 100%; }
+    .section-inner.reveal {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
     #hero {
       position: relative;
@@ -295,44 +303,78 @@
     #about p + p { margin-top: 1rem; }
 
     #skills {
-      background: linear-gradient(180deg, var(--light-bg) 0%, #F0EBE8 100%);
-      color: var(--dark-bg);
+      background: #2a1f2d;
+      color: var(--dark-text);
     }
     #skills h2 {
       font-size: clamp(2rem, 5vw, 2.75rem);
       margin-bottom: 2rem;
-      color: var(--dark-bg);
+      color: var(--pastel-pink-light);
     }
-    .skills-categories {
+    .skills-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
-    }
-    .skill-category {
-      padding: 1.5rem;
-      background: rgba(255,255,255,0.7);
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid rgba(248, 244, 240, 0.08);
       border-radius: 12px;
-      border: 1px solid rgba(201, 177, 189, 0.3);
-      transition: transform 0.3s, box-shadow 0.3s;
+      overflow: hidden;
     }
-    .skill-category:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(156, 175, 136, 0.2); }
-    .skill-category h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.15rem;
-      font-weight: 500;
+    .skill-card {
+      position: relative;
+      padding: 2rem 1.5rem;
+      background: transparent;
+      border-right: 1px solid rgba(248, 244, 240, 0.08);
+      transition: background 0.4s ease, box-shadow 0.4s ease;
+    }
+    .skill-card:last-child { border-right: none; }
+    .skill-card::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background: var(--pastel-pink);
+      transition: width 0.4s ease;
+    }
+    .skill-card:hover {
+      background: rgba(248, 244, 240, 0.04);
+    }
+    .skill-card:hover::after { width: 100%; }
+    .skill-num {
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      color: var(--pastel-pink);
       margin-bottom: 0.75rem;
-      color: var(--dark-bg);
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid rgba(201, 177, 189, 0.4);
     }
-    .skill-category ul {
-      list-style: none;
+    .skill-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.5rem, 2.5vw, 1.85rem);
+      font-weight: 500;
+      color: var(--dark-text);
+      margin-bottom: 0.6rem;
+      line-height: 1.2;
+    }
+    .skill-desc {
       font-size: 0.9rem;
-      line-height: 1.7;
-      color: var(--text-muted);
+      line-height: 1.6;
+      color: rgba(248, 244, 240, 0.7);
+      margin-bottom: 1rem;
     }
-    .skill-category li { padding-left: 1rem; position: relative; }
-    .skill-category li::before { content: "▸"; position: absolute; left: 0; color: var(--sage); }
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .skill-tags span {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      background: rgba(248, 244, 240, 0.08);
+      color: rgba(248, 244, 240, 0.8);
+      border-radius: 4px;
+      letter-spacing: 0.02em;
+    }
 
     #projects {
       background: linear-gradient(180deg, #252229 0%, var(--dark-bg) 100%);
@@ -383,7 +425,7 @@
     .project-card ul { margin: 0.25rem 0 0 1rem; padding-bottom: 1rem; }
 
     #contact {
-      background: linear-gradient(135deg, var(--pastel-pink-light) 0%, var(--light-bg) 50%, var(--sage-light) 100%);
+      background: linear-gradient(160deg, rgba(245, 213, 216, 0.5) 0%, rgba(253, 248, 246, 0.8) 40%, rgba(232, 213, 224, 0.5) 100%);
       color: var(--dark-bg);
       text-align: center;
     }
@@ -392,8 +434,20 @@
       margin-bottom: 1rem;
       color: var(--dark-bg);
     }
-    #contact .contact-sub { margin-bottom: 1rem; color: var(--text-muted); font-size: 1rem; }
-    #contact .contact-location { margin-bottom: 1.5rem; color: var(--text-muted); font-size: 0.95rem; }
+    #contact .contact-sub { margin-bottom: 1.5rem; color: var(--text-muted); font-size: 1rem; }
+    #contact .contact-email {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+      color: #c9919a;
+      margin-bottom: 1rem;
+    }
+    #contact .contact-email a {
+      color: inherit;
+      text-decoration: none;
+      transition: opacity 0.3s;
+    }
+    #contact .contact-email a:hover { opacity: 0.85; }
     .contact-links {
       display: flex;
       flex-wrap: wrap;
@@ -416,11 +470,21 @@
     .contact-links a:hover { background: var(--pastel-purple-light); transform: scale(1.02); }
 
     footer {
-      padding: 1.5rem 2rem;
-      text-align: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      align-items: center;
+      padding: 1.25rem 2rem;
       font-size: 0.85rem;
       background: var(--dark-bg);
       color: rgba(248, 244, 240, 0.7);
+      border-top: 1px solid rgba(248, 244, 240, 0.12);
+    }
+    footer .footer-left { text-align: left; }
+    footer .footer-right { text-align: right; }
+    @media (max-width: 600px) {
+      footer { grid-template-columns: 1fr; text-align: center; }
+      footer .footer-left, footer .footer-right { text-align: center; }
     }
 
     @media (max-width: 768px) {
@@ -445,7 +509,9 @@
       .nav-toggle.open span:nth-child(2) { opacity: 0; }
       .nav-toggle.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
       section { padding: 4rem 1.25rem 3rem; min-height: auto; padding-top: 5rem; padding-bottom: 4rem; }
-      .skills-categories { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .skill-card { border-right: none; border-bottom: 1px solid rgba(248, 244, 240, 0.08); }
+      .skill-card:last-child { border-bottom: none; }
       .hero-wrap { flex-direction: column; gap: 1.5rem; }
       .hero-portrait-wrap { width: min(220px, 55vw); height: min(220px, 55vw); }
     }
@@ -508,31 +574,37 @@
   <section id="skills">
     <div class="section-inner">
       <h2>Core Skills</h2>
-      <div class="skills-categories">
-        <div class="skill-category">
+      <div class="skills-grid">
+        <div class="skill-card">
+          <span class="skill-num">01</span>
           <h3>Professional Knowledge</h3>
-          <ul>
-            <li>Market entry strategy analysis</li>
-            <li>Incoterms 2020 (FOB – cost &amp; risk allocation)</li>
-            <li>Export procedures &amp; shipment process</li>
-            <li>Cold chain logistics in seafood export</li>
-          </ul>
+          <p class="skill-desc">Nền tảng kiến thức về thương mại quốc tế, điều khoản giao hàng và chuỗi cung ứng.</p>
+          <div class="skill-tags">
+            <span>Market entry</span>
+            <span>Incoterms 2020</span>
+            <span>Export procedures</span>
+            <span>Cold chain</span>
+          </div>
         </div>
-        <div class="skill-category">
+        <div class="skill-card">
+          <span class="skill-num">02</span>
           <h3>Analytical Skills</h3>
-          <ul>
-            <li>Business case analysis</li>
-            <li>Risk assessment in export logistics</li>
-            <li>Structured academic reporting</li>
-          </ul>
+          <p class="skill-desc">Phân tích case study, đánh giá rủi ro và lập báo cáo học thuật có cấu trúc.</p>
+          <div class="skill-tags">
+            <span>Case analysis</span>
+            <span>Risk assessment</span>
+            <span>Reporting</span>
+          </div>
         </div>
-        <div class="skill-category">
+        <div class="skill-card">
+          <span class="skill-num">03</span>
           <h3>Tools</h3>
-          <ul>
-            <li>Microsoft Word</li>
-            <li>PowerPoint</li>
-            <li>Excel (basic level)</li>
-          </ul>
+          <p class="skill-desc">Sử dụng công cụ văn phòng cho tài liệu, thuyết trình và xử lý dữ liệu cơ bản.</p>
+          <div class="skill-tags">
+            <span>Word</span>
+            <span>PowerPoint</span>
+            <span>Excel</span>
+          </div>
         </div>
       </div>
     </div>
@@ -575,17 +647,19 @@
   <section id="contact">
     <div class="section-inner">
       <h2>Contact</h2>
-      <p class="contact-sub">Reach out via email or phone.</p>
-      <p class="contact-location">Location: Vietnam</p>
-      <div class="contact-links">
+      <p class="contact-sub">Reach out via email or GitHub.</p>
+      <p class="contact-email">
         <a href="mailto:lethiphuongthao.yd0612@gmail.com" title="Send email">lethiphuongthao.yd0612@gmail.com</a>
-        <a href="tel:0377383154" title="Call">0377 383 154</a>
+      </p>
+      <div class="contact-links">
+        <a href="https://github.com/thaothao-612" target="_blank" rel="noopener noreferrer" title="GitHub">GitHub</a>
       </div>
     </div>
   </section>
 
   <footer>
-    &copy; 2025 Le Thi Phuong Thao · International Business, Foreign Trade University.
+    <div class="footer-left">&copy; 2026 Le Thi Phuong Thao</div>
+    <div class="footer-right">International Business, Foreign Trade University</div>
   </footer>
 
   <script>
@@ -653,18 +727,20 @@
         animateCursor();
       }
 
-      const sections = document.querySelectorAll('section');
-      const reveal = () => {
-        const vh = window.innerHeight;
-        sections.forEach(sec => {
-          const top = sec.getBoundingClientRect().top;
-          const threshold = vh * 0.75;
-          if (top < threshold) sec.classList.add('reveal');
+      // Scroll reveal: IntersectionObserver, thêm .reveal cho section content khi vào viewport
+      var sectionInners = document.querySelectorAll('section .section-inner');
+      if (sectionInners.length && 'IntersectionObserver' in window) {
+        var revealObserver = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('reveal');
+            }
+          });
+        }, { threshold: 0.1 });
+        sectionInners.forEach(function(el) {
+          revealObserver.observe(el);
         });
-      };
-      reveal();
-      window.addEventListener('scroll', reveal);
-      window.addEventListener('resize', reveal);
+      }
 
       const nav = document.getElementById('nav');
       const onScroll = () => {
